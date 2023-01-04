@@ -45,7 +45,7 @@ function updateStorage() {
   })
   var notesBody = []
   $('[data-notes] li').each(function(i) {
-    notesBody.push($('.note div')[i].textContent)
+    notesBody.push($('.note > div')[i].innerHTML)
   })
 
   notes = {
@@ -151,7 +151,7 @@ if (!localStorage.getItem('Notes')) {
   // next apply the storage
   $('[data-notes] li').each(function(i) {
     $('.note').eq(i).find('strong').text(notes.title[i])
-    $('.note').eq(i).find('div').text(notes.body[i])
+    $('.note').eq(i).find('div').html(notes.body[i])
 
     // add search criteria
     $('#searchtitles').append('<option value="'+ notes.title[i] +'>')
