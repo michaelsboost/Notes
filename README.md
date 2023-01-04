@@ -3,7 +3,7 @@ Notes
 
 Your free and open source offline notepad application! Try it today at [michaelsboost.com/Notes](https://michaelsboost.github.io/Notes/)
 
-![](https://raw.githubusercontent.com/michaelsboost/Notes/gh-pages/header.png)
+![](https://raw.githubusercontent.com/michaelsboost/Notes/gh-pages/header.svg)
 
 Version
 -------------
