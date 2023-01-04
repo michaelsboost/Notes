@@ -22,7 +22,7 @@ Notes uses a number of open source projects to work properly:
 
 * [Normalize](https://github.com/necolas/normalize.css) - CSS reset library
 * [jQuery](http://jquery.com/) - duh
-* [AlertifyJS](http://alertifyjs.com/) - For the awesome and stylish notification logs
+* [Poly UI Kit](https://github.com/Guilh/Poly) - Beautiful and customizable responsive interface library
 * [SweetAlert](https://sweetalert.js.org/guides/) - For the awesome and stylish alert dialogs
 
 Development
