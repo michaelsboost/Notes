@@ -1,0 +1,52 @@
+body {
+  color: #fff;
+  background: #000;
+}
+h1 {
+  color: #fff;
+}
+input {
+  color: #fff;
+  background: transparent;
+}
+button {
+  border: 0;
+  background: transparent;
+}
+
+/* menu */
+.menuicon {
+  color: #ff4343;
+}
+.menuicon.opened {
+  color: #fff;
+}
+
+/* notes */
+.h1 {
+  color: #3aff22;
+}
+.totalnotes {
+  color: #aaa;
+}
+.list {
+  border-top: 1px solid #333;
+}
+.list li {
+  border-bottom: 1px solid #333;
+}
+.note.opened {
+  background: #000;
+}
+.notebtns button.active:nth-child(1) {
+  color: #21c5c0;
+}
+.notebtns button.active:nth-child(2) {
+  color: #389b3c;
+}
+
+/* scratchpad */
+.scratchpad {
+  background: #25251b;
+  border: 1px solid #5f5c4b;
+}

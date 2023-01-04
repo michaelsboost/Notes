@@ -1,0 +1,82 @@
+/* resets */
+input[type=search] {
+  width: calc(100% - 30px);
+  border: 0;
+}
+input {
+  font-weight: 300;
+  font-size: 2.625em;
+  line-height: 1.09524;
+  margin: 0;
+}
+
+/* removes datalist dropdown arrow */
+input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+/* menu */
+.menuicon {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  margin: .25em;
+  font-size: 2.625em;
+  z-index: 2;
+}
+.icon {
+  transform: scale(0.75);
+}
+
+/* notes */
+.list {
+  overflow: auto;
+  height: calc(100vh - 65vh);
+}
+.list li:nth-child(1) {
+  padding-top: 15px;
+}
+.list li {
+  cursor: pointer;
+  padding-bottom: 25px;
+}
+.list li:not(:first-child) {
+  padding-top: 15px;
+}
+.note strong {
+  display: block;
+  font-size: 1.25em;
+}
+.note.opened {
+  cursor: default;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1em;
+  z-index: 1;
+}
+.note.opened strong {
+  cursor: text;
+  font-weight: 300;
+  font-size: 2.625em;
+  line-height: 2;
+  margin: 0;
+}
+.note.opened div {
+  cursor: text;
+}
+
+/* scratchpad */
+.scratchpad {
+  margin: 0;
+  min-height: calc(100vh - 75vh);
+  resize: vertical;
+  border-radius: 5px;
+}
+
+/* misc */
+.fr {
+  float: right;
+}
