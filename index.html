@@ -22,7 +22,7 @@
   </head>
   <body>
     <!-- <input id="search" type="search" placeholder="🔍 Search..."> -->
-    <input id="search" type="text" placeholder="Search..." list="searchtitles" name="name">
+    <input id="search" type="text" placeholder="Search..." list="searchtitles" name="name" onkeyup="searchFunction()" onchange="searchFunction()">
     <datalist id="searchtitles"></datalist>
 
     <a id="menu" class="menuicon" href="https://michaelsboost.com/donate/">
@@ -33,16 +33,16 @@
       <div class="grid__col--12">
         <p>
           <h1>
-            <button data-about class="h1">Notes</button> 
+            <button id="about" class="h1">Notes</button> 
             <span id="totalnotes" class="totalnotes">(0)</span>
             <span class="notebtns fr">
-              <!-- <button data-add="note" class="active"> -->
-              <button class="icon" data-add="note">
+              <!-- <button id="addnote" class="icon active"> -->
+              <button class="icon" id="addnote">
                 <i class="fa fa-plus"></i>
               </button>
               &nbsp;
-              <!-- <button data-delete="note" class="active"> -->
-              <button class="icon" data-delete="note">
+              <!-- <button id="deletenote" class="icon active"> -->
+              <button class="icon" id="deletenote">
                 <i class="fa fa-trash"></i>
               </button>
             </span>
@@ -53,26 +53,8 @@
     
     <div class="grid">
       <div class="grid__col--12">
-        <ul class="list" id="list" data-notes>
+        <ul class="list" id="list">
           <!-- <li>
-            <div class="note">
-              <strong>Your note title</strong>
-              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, quam tempore blanditiis aut laborum culpa fugit voluptatibus veniam error at praesentium, porro nulla animi veritatis! Delectus corrupti perferendis iure voluptas?</div>
-            </div>
-          </li>
-          <li>
-            <div class="note">
-              <strong>Your note title</strong>
-              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, quam tempore blanditiis aut laborum culpa fugit voluptatibus veniam error at praesentium, porro nulla animi veritatis! Delectus corrupti perferendis iure voluptas?</div>
-            </div>
-          </li>
-          <li>
-            <div class="note">
-              <strong>Your note title</strong>
-              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, quam tempore blanditiis aut laborum culpa fugit voluptatibus veniam error at praesentium, porro nulla animi veritatis! Delectus corrupti perferendis iure voluptas?</div>
-            </div>
-          </li>
-          <li>
             <div class="note">
               <strong>Your note title</strong>
               <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, quam tempore blanditiis aut laborum culpa fugit voluptatibus veniam error at praesentium, porro nulla animi veritatis! Delectus corrupti perferendis iure voluptas?</div>
@@ -83,7 +65,7 @@
         <p>
           <h1>Scratchpad 
             <span class="fr">
-              <button class="icon" data-clearpad>
+              <button class="icon" id="clearpad">
                 <i class="fa fa-trash"></i>
               </button>
             </span>
@@ -96,7 +78,6 @@
 
     <script src="libraries/font-awesome/js/all.min.js"></script>
     <script src="libraries/sweetalert2/sweetalert2.min.js"></script>
-    <script src="libraries/jquery/jquery.js"></script>
     <script src="js/notes.js"></script>
   </body>
 </html>
