@@ -21,14 +21,16 @@
     <link rel="stylesheet"    href="css/dark.css" id="theme">
   </head>
   <body>
-    <!-- <input id="search" type="search" placeholder="🔍 Search..."> -->
+    <!-- search bar -->
     <input id="search" type="text" placeholder="Search..." list="searchtitles" name="name" onkeyup="searchFunction()" onchange="searchFunction()">
     <datalist id="searchtitles"></datalist>
 
+    <!-- close menu (and donate button) -->
     <a id="menu" class="menuicon" href="https://michaelsboost.com/donate/">
       <i class="fa fa-heart"></i>
     </a>
 
+    <!-- notes header, add note and delete note buttons -->
     <div class="grid">
       <div class="grid__col--12">
         <p>
@@ -51,6 +53,7 @@
       </div>
     </div>
     
+    <!-- your notes -->
     <div class="grid">
       <div class="grid__col--12">
         <ul class="list" id="list">
@@ -62,6 +65,7 @@
           </li> -->
         </ul>
 
+        <!-- scratchpad header -->
         <p>
           <h1>Scratchpad 
             <span class="fr">
@@ -72,6 +76,7 @@
           </h1>
         </p>
 
+        <!-- scratchpad -->
         <textarea id="scratchpad" class="scratchpad" placeholder="Write something..."></textarea>
       </div>
     </div>

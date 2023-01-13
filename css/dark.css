@@ -2,10 +2,10 @@ body {
   color: #fff;
   background: #000;
 }
-h1 {
+.grid > .grid__col--12 > h1 {
   color: #fff;
 }
-input {
+body > input {
   color: #fff;
   background: transparent;
 }
@@ -32,7 +32,7 @@ button {
 .list {
   border-top: 1px solid #333;
 }
-.list li {
+.list > li {
   border-bottom: 1px solid #333;
 }
 .note.opened {

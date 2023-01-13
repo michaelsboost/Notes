@@ -96,8 +96,8 @@ function openNotes() {
     document.querySelectorAll('.note')[i].onclick = function() {
       if (!deletenote.classList.contains('active')) {
         this.classList.add('opened')
-        document.querySelector('.note.opened strong').setAttribute('contenteditable', true)
-        document.querySelector('.note.opened div').setAttribute('contenteditable', true)
+        document.querySelector('.note.opened > strong').setAttribute('contenteditable', true)
+        document.querySelector('.note.opened > div').setAttribute('contenteditable', true)
       
         // menu opened change icon to close
         menu.classList.add('opened')
@@ -220,3 +220,36 @@ if (!localStorage.getItem('Notes')) {
   // function to open notes
   openNotes()
 }
+
+// password encription from - https://stackoverflow.com/questions/18279141/javascript-string-encryption-and-decryption
+const cipher = salt => {
+  const textToChars = text => text.split('').map(c => c.charCodeAt(0));
+  const byteHex = n => ("0" + Number(n).toString(16)).substr(-2);
+  const applySaltToChar = code => textToChars(salt).reduce((a,b) => a ^ b, code);
+
+  return text => text.split('')
+    .map(textToChars)
+    .map(applySaltToChar)
+    .map(byteHex)
+    .join('');
+}
+  
+const decipher = salt => {
+  const textToChars = text => text.split('').map(c => c.charCodeAt(0));
+  const applySaltToChar = code => textToChars(salt).reduce((a,b) => a ^ b, code);
+  return encoded => encoded.match(/.{1,2}/g)
+    .map(hex => parseInt(hex, 16))
+    .map(applySaltToChar)
+    .map(charCode => String.fromCharCode(charCode))
+    .join('');
+}
+
+// To create a cipher
+const myPass = cipher('pass')
+
+// //Then cipher any text:
+// console.log(myPass('the secret string'))
+
+// //To decipher, you need to create a decipher and use it:
+// const myDecipher = decipher('pass')
+// console.log(myDecipher("7c606d287b6d6b7a6d7c287b7c7a61666f"))

@@ -7,11 +7,11 @@ body {
   bottom: 0;
   overflow: hidden;
 }
-input[type=search] {
+body > input[type=search] {
   width: calc(100% - 30px);
   border: 0;
 }
-input {
+body > input {
   font-weight: 300;
   font-size: 2.625em;
   line-height: 1.09524;
@@ -39,19 +39,19 @@ input::-webkit-calendar-picker-indicator {
 /* notes */
 .list {
   overflow: auto;
-  height: calc(100vh - 65vh);
+  height: calc(100vh - 70vh);
 }
-.list li:nth-child(1) {
+.list > li:nth-child(1) {
   padding-top: 15px;
 }
-.list li {
+.list > li {
   cursor: pointer;
   padding-bottom: 25px;
 }
-.list li:not(:first-child) {
+.list > li:not(:first-child) {
   padding-top: 15px;
 }
-.note strong {
+.note > strong {
   display: block;
   font-size: 1.25em;
 }
@@ -71,15 +71,18 @@ input::-webkit-calendar-picker-indicator {
   height: 54px;
   overflow: hidden;
 }
-.note.opened strong {
+.note.opened > strong {
   cursor: text;
   font-weight: 300;
   font-size: 2.625em;
   line-height: 2;
   margin: 0;
+  white-space: nowrap;
+  overflow: auto;
 }
-.note.opened div {
+.note.opened > div {
   cursor: text;
+  height: calc(100vh - 116px);
 }
 
 /* scratchpad */
