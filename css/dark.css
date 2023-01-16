@@ -1,12 +1,25 @@
+@import '../libraries/polyui/polyui.css';
+@import '../libraries/font-awesome/css/all.min.css';
+@import '../libraries/quill/quill.core.css';
+@import '../libraries/quill/quill.snow.css';
+@import 'style.css';
+
+:root {
+  --colorprimary: #fff;
+  --colorsecondary: #aaa;
+  --iconcolor: #666;
+  --bgcolor: #000;
+}
+
 body {
-  color: #fff;
-  background: #000;
+  color: var(--colorprimary);
+  background: var(--bgcolor);
 }
 .grid > .grid__col--12 > h1 {
-  color: #fff;
+  color: var(--colorprimary);
 }
 body > input {
-  color: #fff;
+  color: var(--colorprimary);
   background: transparent;
 }
 button {
@@ -19,30 +32,39 @@ button {
   color: #ff4343;
 }
 .menuicon.opened {
-  color: #fff;
+  color: var(--colorprimary);
 }
 
 /* notes */
+.ql-toolbar {
+  background: #fff;
+}
+.ql-toolbar.ql-snow {
+  border-color: #5f5c4b;
+}
 .h1 {
   color: #3aff22;
 }
 .totalnotes {
-  color: #aaa;
+  color: var(--colorsecondary);
 }
 .list {
-  border-top: 1px solid #333;
+  border-top: 1px solid var(--colorsecondary);
 }
 .list > li {
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--colorsecondary);
 }
-.note.opened {
-  background: #000;
+.dialog, .note.opened {
+  background: var(--bgcolor);
 }
 .notebtns button.active:nth-child(1) {
   color: #21c5c0;
 }
 .notebtns button.active:nth-child(2) {
   color: #389b3c;
+}
+button.icon {
+  color: var(--colorprimary);
 }
 
 /* scratchpad */

@@ -12,12 +12,7 @@
     <meta property="og:description" content="Your free and open source offline notepad application!">
     <meta property="og:image"       content="https://michaelsboost.github.io/Notes/imgs/header.png">
     <link rel="shortcut icon" href="imgs/logo.svg" type="image/x-icon">
-    <link rel="stylesheet"    href="libraries/polyui/polyui.css">
-    <link rel="stylesheet"    href="libraries/font-awesome/css/all.min.css">
-    <link rel="stylesheet"    href="libraries/sweetalert2/sweetalert2.min.css">
-    <link rel="stylesheet"    href="css/style.css">
-    <!-- <link rel="stylesheet"    href="css/light.css" id="theme"> -->
-    <link rel="stylesheet"    href="css/dark.css" id="theme">
+    <link rel="stylesheet" href="css/dark.css">
     <!-- Chrome, Firefox OS and Opera -->
     <meta name="theme-color" content="#000">
     <!-- Windows Phone -->
@@ -44,7 +39,9 @@
     <div class="grid">
       <div class="grid__col--12"><br>
         <h1>
-          <button id="about" class="h1">Notes</button> 
+          <a id="about" class="h1" href="https://github.com/michaelsboost/Notes/" target="_blank">
+            Notes 
+          </a>
           <span id="totalnotes" class="totalnotes">(0)</span>
           <span class="notebtns fr">
             <!-- <button id="addnote" class="icon active"> -->
@@ -88,6 +85,14 @@
       </div>
     </div>
 
-    <script src="js/app.js"></script>
+    <div id="dialog" class="dialog hide">
+      <article class="note">
+        <input id="editorTitle" type="text" placeholder="Title">
+        <section id="editorBody"></section>
+      </article>
+    </div>
+
+    <script src="libraries/quill/quill.min.js"></script>
+    <script src="js/notes.js"></script>
   </body>
 </html>

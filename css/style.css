@@ -51,11 +51,12 @@ input::-webkit-calendar-picker-indicator {
 .list > li:not(:first-child) {
   padding-top: 15px;
 }
-.note > strong {
+.note > article {
   display: block;
   font-size: 1.25em;
+  font-weight: bold;
 }
-.note.opened {
+.dialog {
   cursor: default;
   position: absolute;
   top: 0;
@@ -67,22 +68,24 @@ input::-webkit-calendar-picker-indicator {
   height: auto;
   overflow: auto;
 }
-.note {
+.list .note {
   height: 54px;
   overflow: hidden;
 }
-.note.opened > strong {
+.dialog .note > input {
   cursor: text;
   font-weight: 300;
   font-size: 2.625em;
-  line-height: 2;
-  margin: 0;
+  line-height: 0;
+  padding: 0;
+  margin: 0 0 .5em 0;
   white-space: nowrap;
   overflow: auto;
+  background: transparent;
 }
-.note.opened > div {
+.dialog .note > section {
   cursor: text;
-  height: calc(100vh - 116px);
+  height: calc(100vh - 146px);
 }
 
 /* scratchpad */
@@ -96,4 +99,7 @@ input::-webkit-calendar-picker-indicator {
 /* misc */
 .fr {
   float: right;
+}
+.hide {
+  display: none;
 }

@@ -1,42 +1,26 @@
-var version = '1.000-release',
-    logo    = 'imgs/logo.svg',
-    notesElm     = document.querySelectorAll('.note'),
-    noteTitle    = document.querySelector('.note > strong'),
-    noteBody     = document.querySelector('.note > div'),
+// load quill
+function dynamicallyLoadScript(url) {
+  var script = document.createElement("script");  // create a script DOM node
+  script.src = url;  // set its src to the provided URL
+ 
+  // add it to the end of the head section of the page
+  // (could change 'head' to 'body' to add it to the end of the body section instead)
+  document.head.appendChild(script);
+}
+dynamicallyLoadScript('libraries/quill/quill.min.js')
+
+// variables
+var notesElm     = document.querySelectorAll('#note .note'),
+    noteTitle    = document.querySelector('#note .note > article'),
+    noteBody     = document.querySelector('#note .note > section'),
     daList       = document.getElementById('list'),
     listAll      = document.querySelectorAll('#list > li'),
+    currentTitleElm, currentTitle, currentBodyElm, currentBody, quill,
     notes = {
       title: [],
       body: [],
       scratchpad: ''
     };
-
-// show dark logo for dark theme
-if (theme.getAttribute('href') === 'css/dark.css' ) {
-  logo = 'imgs/logo-white.svg'
-} else {
-  logo = 'imgs/logo.svg'
-}
-
-// Budjut about
-about.onclick = function() {
-  if (theme.getAttribute('href') === 'css/dark.css' ) {
-    swal({
-      html: '<img src="'+ logo +'" style="isolation:isolate; width: 50%; cursor: pointer;" viewBox="0 0 512 512" onclick="window.open(\'https://github.com/michaelsboost/Notes\', \'_blank\')"><br><h1>Notes</h1><h5>Version '+ version +'</h5><a href="https://github.com/michaelsboost/Notes/blob/gh-pages/LICENSE" target="_blank">Open Source License</a>'
-    })
-    document.querySelector('.swal2-show').style.fontSize = '14px'
-    document.querySelector('.swal2-show').style.background = '#25251b'
-    document.querySelector('.swal2-show a').style.color = '#3085d6'
-    document.querySelector('.swal2-show h1, .swal2-show h5').style.fontWeight = '100'
-    document.querySelector('.swal2-show h1, .swal2-show h5').style.color = '#fff'
-  } else {
-    swal({
-      html: '<img src="'+ logo +'" style="isolation:isolate; width: 50%; cursor: pointer;" viewBox="0 0 512 512" onclick="window.open(\'https://github.com/michaelsboost/Notes\', \'_blank\')"><br><h1>Notes</h1><h5>Version '+ version +'</h5><a href="https://github.com/michaelsboost/Notes/blob/gh-pages/LICENSE" target="_blank">Open Source License</a>'
-    })
-    document.querySelector('.swal2-show').style.fontSize = '14px'
-    document.querySelector('.swal2-show h1, .swal2-show h5').style.fontWeight = '100'
-  }
-}
 
 // remember notes in localStorage
 function updateStorage() {
@@ -44,8 +28,8 @@ function updateStorage() {
   var notesTitle = []
   var notesBody = []
   for (i = 0; i < daList.children.length; i++) {
-    notesTitle.push(document.querySelectorAll('.note > strong')[i].textContent)
-    notesBody.push(document.querySelectorAll('.note > div')[i].innerHTML)
+    notesTitle.push(document.querySelectorAll('.note > article')[i].textContent)
+    notesBody.push(document.querySelectorAll('.note > section')[i].innerHTML)
   }
 
   notes = {
@@ -90,37 +74,61 @@ function searchFunction() {
   }
 }
 
-// open note
-function openNotes() {
-  for (i = 0; i < daList.children.length; i++) {
-    document.querySelectorAll('.note')[i].onclick = function() {
-      if (!deletenote.classList.contains('active')) {
-        this.classList.add('opened')
-        document.querySelector('.note.opened > strong').setAttribute('contenteditable', true)
-        document.querySelector('.note.opened > div').setAttribute('contenteditable', true)
-      
-        // menu opened change icon to close
-        menu.classList.add('opened')
-        menu.setAttribute('href', 'javascript:closeNote()')
-        menu.innerHTML = '<svg class="svg-inline--fa fa-xmark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"></path></svg>'
-      } else {
-        // delete list item by index
-        listAll.forEach(function(e, i) {
-          listAll[i].onclick = function() {
-            listAll[i].remove()
+// edit note
+function editNote(num) {
+  if (!deletenote.classList.contains('active')) {
+    currentTitleElm = document.querySelectorAll('.list .note > article')[num]
+    currentTitle = currentTitleElm.textContent
+    currentBodyElm = document.querySelectorAll('.list .note > section')[num]
+    currentBody = currentBodyElm.innerHTML
 
-            // update list
-            totalnotes.textContent = '('+ daList.children.length +')'
-            updateStorage()
-          }
-        })
+    // menu opened change icon to close
+    menu.classList.add('opened')
+    menu.setAttribute('href', 'javascript:closeNote()')
+    menu.innerHTML = '<i class="fa fa-times"></i>'
 
-        // update list
-        totalnotes.textContent = '('+ daList.children.length +')'
-        updateStorage()
-        return false
-      }
-    }
+    // grab note title and body
+    editorTitle.value = currentTitle
+    editorBody.innerHTML = currentBody
+
+    // display editor
+    document.querySelector('#dialog').style.display = 'block'
+
+    // edit opened note
+    quill = new Quill('#editorBody', {
+      modules: {
+        'toolbar': [
+          [{ 'size': [] }],
+          [ 'bold', 'italic', 'underline', 'strike' ],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'script': 'super' }, { 'script': 'sub' }],
+          [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
+          [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+          [ {'direction': 'rtl'}, { 'align': [] }],
+          [ 'link', 'image', 'video', 'formula' ],
+          [ 'clean' ]
+        ],
+      },
+      theme: 'snow'
+    })
+  }
+}
+
+// delete note
+function deleteNote(num) {
+  if (deletenote.classList.contains('active')) {
+    listAll[num].remove()
+
+    // update list
+    listAll = document.querySelectorAll('#list > li')
+    listAll.forEach(function(item, index) {
+      listAll[index].setAttribute('onclick', 'deleteNote('+ index +')');
+    })
+
+    // update list counter
+    totalnotes.textContent = '('+ daList.children.length +')'
+    updateStorage()
+    return false
   }
 }
 
@@ -129,12 +137,22 @@ function closeNote() {
   // close menu
   menu.classList.remove('opened')
   menu.setAttribute('href', 'https://michaelsboost.com/donate/')
-  menu.innerHTML = '<svg class="svg-inline--fa fa-heart" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="heart" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"></path></svg>'
+  menu.innerHTML = '<i class="fa fa-heart"></i>'
 
   // close note
-  document.querySelector('.note.opened > strong').removeAttribute('contenteditable')
-  document.querySelector('.note.opened > div').removeAttribute('contenteditable')
-  document.querySelector('.note.opened').classList.remove('opened')
+  document.querySelector('#dialog').style.display = 'none'
+
+  // remove the editor toolbar to prevent it from being added again
+  document.querySelector('.ql-toolbar').remove()
+
+  // set title to active note
+  currentTitleElm.textContent = editorTitle.value
+  
+  // set editor's content to active note
+  currentBodyElm.innerHTML = quill.root.innerHTML
+
+  // save notes
+  updateStorage()
 }
 
 // add note
@@ -151,7 +169,7 @@ addnote.onclick = function() {
   daList.innerHTML = ''
   var liElm = document.createElement('div')
   for (let numbers in notes.title) {
-    liElm.innerHTML = '<li><div class="note"><strong>'+ notes.title[numbers] +'</strong><div>'+ notes.body[numbers] +'</div></div></li>'
+    liElm.innerHTML = '<li onclick="editNote('+ numbers +')"><article class="note"><article>'+ notes.title[numbers] +'</article><section>'+ notes.body[numbers] +'</section></article></li>'
     while (liElm.children.length > 0) {
       daList.appendChild(liElm.children[0])
     }
@@ -162,7 +180,6 @@ addnote.onclick = function() {
   
   notesElm = document.querySelectorAll('.note')
   listAll  = document.querySelectorAll('#list li')
-  openNotes()
   updateStorage()
 }
 
@@ -170,8 +187,14 @@ addnote.onclick = function() {
 deletenote.onclick = function() {
   if (this.classList.contains('active')) {
     this.classList.remove('active')
+    listAll.forEach(function(item, index) {
+      listAll[index].setAttribute('onclick', 'editNote('+ index +')');
+    })
   } else {
     this.classList.add('active')
+    listAll.forEach(function(item, index) {
+      listAll[index].setAttribute('onclick', 'deleteNote('+ index +')');
+    })
   }
 }
 
@@ -193,14 +216,14 @@ if (!localStorage.getItem('Notes')) {
   // first we'll append the list
   var str = ''
   for (let numbers in notes.title) {
-    str += '<li><div class="note"><strong>'+ notes.title[numbers] +'</strong><div>'+ notes.body[numbers] +'</div></div></li>'
+    str += '<li onclick="editNote('+ numbers +')"><article class="note"><article>'+ notes.title[numbers] +'</article><section>'+ notes.body[numbers] +'</section></article></li>'
   }
   daList.innerHTML = str
 
   // reset variables
-  notesElm  = document.querySelectorAll('.note')
-  noteTitle = document.querySelector('.note > strong')
-  noteBody  = document.querySelector('.note > div')
+  notesElm  = document.querySelectorAll('#note .note')
+  noteTitle = document.querySelector('#note .note > article')
+  noteBody  = document.querySelector('#note .note > section')
   daList    = document.getElementById('list')
   listAll   = document.querySelectorAll('#list > li')
 
@@ -216,40 +239,4 @@ if (!localStorage.getItem('Notes')) {
     str += '<option value="'+ notes.title[numbers] +'" />'
   }
   searchtitles.innerHTML = str
-
-  // function to open notes
-  openNotes()
 }
-
-// password encription from - https://stackoverflow.com/questions/18279141/javascript-string-encryption-and-decryption
-const cipher = salt => {
-  const textToChars = text => text.split('').map(c => c.charCodeAt(0));
-  const byteHex = n => ("0" + Number(n).toString(16)).substr(-2);
-  const applySaltToChar = code => textToChars(salt).reduce((a,b) => a ^ b, code);
-
-  return text => text.split('')
-    .map(textToChars)
-    .map(applySaltToChar)
-    .map(byteHex)
-    .join('');
-}
-  
-const decipher = salt => {
-  const textToChars = text => text.split('').map(c => c.charCodeAt(0));
-  const applySaltToChar = code => textToChars(salt).reduce((a,b) => a ^ b, code);
-  return encoded => encoded.match(/.{1,2}/g)
-    .map(hex => parseInt(hex, 16))
-    .map(applySaltToChar)
-    .map(charCode => String.fromCharCode(charCode))
-    .join('');
-}
-
-// To create a cipher
-const myPass = cipher('pass')
-
-// //Then cipher any text:
-// console.log(myPass('the secret string'))
-
-// //To decipher, you need to create a decipher and use it:
-// const myDecipher = decipher('pass')
-// console.log(myDecipher("7c606d287b6d6b7a6d7c287b7c7a61666f"))
