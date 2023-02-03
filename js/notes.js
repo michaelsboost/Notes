@@ -1,5 +1,14 @@
+// variables
+let quill, currentTitleElm, currentBodyElm,
+    notes = {
+      theme: '',
+      title: [],
+      body: [],
+      scratchpad: ''
+    };
+
 // load quill
-function dynamicallyLoadScript(url) {
+dynamicallyLoadScript = (url) => {
   var script = document.createElement("script");  // create a script DOM node
   script.src = url;  // set its src to the provided URL
  
@@ -9,33 +18,21 @@ function dynamicallyLoadScript(url) {
 }
 dynamicallyLoadScript('libraries/quill/quill.min.js')
 
-// variables
-var notesElm     = document.querySelectorAll('#note .note'),
-    noteTitle    = document.querySelector('#note .note > article'),
-    noteBody     = document.querySelector('#note .note > section'),
-    daList       = document.getElementById('list'),
-    listAll      = document.querySelectorAll('#list > li'),
-    currentTitleElm, currentTitle, currentBodyElm, currentBody, quill,
-    notes = {
-      title: [],
-      body: [],
-      scratchpad: ''
-    };
-
 // remember notes in localStorage
-function updateStorage() {
+updateStorage = () => {
   // push array to localstorage
   var notesTitle = []
   var notesBody = []
-  for (i = 0; i < daList.children.length; i++) {
-    notesTitle.push(document.querySelectorAll('.note > article')[i].textContent)
-    notesBody.push(document.querySelectorAll('.note > section')[i].innerHTML)
+  for (i = 0; i < list.children.length; i++) {
+    notesTitle.push(document.querySelectorAll('#list > li > strong')[i].textContent)
+    notesBody.push(document.querySelectorAll('#list > li > section')[i].innerHTML)
   }
 
   notes = {
+    theme: document.querySelector('[data-theme]').getAttribute('data-theme'),
     title: notesTitle,
     body: notesBody,
-    scratchpad: scratchpad.value
+    scratchpad: pad.value
   };
 
   // update search criteria
@@ -48,13 +45,13 @@ function updateStorage() {
   localStorage.setItem('Notes', JSON.stringify(notes));
 }
 
-// remember data onkeyup
-document.body.onkeyup = function() {
+// remember data via localStorage
+document.body.onkeyup = () => {
   updateStorage()
 }
 
 // search
-function searchFunction() {
+searchFunction = () => {
   // Declare variables
   var input, filter, ul, li, a, i, txtValue;
   input = document.getElementById('search');
@@ -64,7 +61,7 @@ function searchFunction() {
 
   // Loop through all list items, and hide those who don't match the search query
   for (i = 0; i < li.length; i++) {
-    a = li[i].getElementsByTagName("article")[0];
+    a = li[i].getElementsByTagName("strong")[0];
     txtValue = a.textContent || a.innerText;
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
       li[i].style.display = "";
@@ -74,25 +71,82 @@ function searchFunction() {
   }
 }
 
-// edit note
-function editNote(num) {
-  if (!deletenote.classList.contains('active')) {
-    currentTitleElm = document.querySelectorAll('.list .note > article')[num]
-    currentTitle = currentTitleElm.textContent
-    currentBodyElm = document.querySelectorAll('.list .note > section')[num]
-    currentBody = currentBodyElm.innerHTML
+// open dialog
+openPad = () => {
+  scratchpad.setAttribute('open', true)
+}
 
-    // menu opened change icon to close
-    menu.classList.add('opened')
-    menu.setAttribute('href', 'javascript:closeNote()')
-    menu.innerHTML = '<i class="fa fa-times"></i>'
+// clear pad
+clearPad = () => {
+  pad.value = ''
+
+  // update localStorage
+  updateStorage()
+}
+
+// close dialog
+closePad = () => {
+  scratchpad.setAttribute('open', false)
+}
+closeDialog = () => {
+  // set title to active note
+  currentTitleElm.textContent = editorTitle.value
+  
+  // set editor's content to active note
+  currentBodyElm.innerHTML    = quill.root.innerHTML
+
+  // close note
+  dialog.setAttribute('open', false)
+
+  // remove the editor toolbar to prevent it from being added again
+  document.querySelector('.ql-toolbar').remove()
+
+  // save notes
+  updateStorage()
+}
+
+// add note
+addNote = () => {
+  // inactivate delete note
+  if (deletenote.style.color) {
+    deletenote.style.color = ''
+  }
+
+  notes.title.unshift('Title')
+  notes.body.unshift('Body')
+
+  // refresh elements on the screen
+  list.innerHTML = ''
+  for (let numbers in notes.title) {
+    list.innerHTML += '<li onclick="editNote('+ numbers +')"><strong>'+ notes.title[numbers] +'</strong><section>'+ notes.body[numbers] +'</section></li>'
+  }
+
+  // update notes counter
+  totalnotes.textContent = '('+ notes.title.length +')'
+
+  // update localStorage
+  updateStorage()
+}
+
+// edit note
+editNote = (num) => {
+  if (!deletenote.style.color) {
+    currentTitleElm = document.querySelectorAll('#list > li > strong')[num]
+    currentBodyElm  = document.querySelectorAll('#list > li > section')[num]
+    let currentTitle    = currentTitleElm.textContent
+    let currentBody     = currentBodyElm.innerHTML
+
+    // remove editor if already visible
+    if (document.querySelector('.ql-toolbar')) {
+      document.querySelector('.ql-toolbar').remove()
+    }
 
     // grab note title and body
-    editorTitle.value = currentTitle
+    editorTitle.value    = currentTitle
     editorBody.innerHTML = currentBody
 
     // display editor
-    document.querySelector('#dialog').style.display = 'block'
+    dialog.setAttribute('open', true)
 
     // edit opened note
     quill = new Quill('#editorBody', {
@@ -114,26 +168,46 @@ function editNote(num) {
   }
 }
 
-// delete note
-function deleteNote(num) {
-  if (deletenote.classList.contains('active')) {
-    listAll[num].remove()
+// toggle delete notes activity
+deletenote.onclick = () => {
+  let listAll = document.querySelectorAll('#list > li')
 
-    // update list
+  if (deletenote.style.color) {
+    deletenote.style.color = ''
+    listAll.forEach(function(item, index) {
+      listAll[index].setAttribute('onclick', 'editNote('+ index +')');
+    })
+  } else {
+    deletenote.style.color = 'hsl(122, 47%, 41%)'
+    listAll.forEach(function(item, index) {
+      listAll[index].setAttribute('onclick', 'deleteNote('+ index +')');
+    })
+  }
+}
+
+// delete note
+deleteNote = (num) => {
+  if (deletenote.style.color) {
+    // delete clicked note
+    document.querySelectorAll('#list > li')[num].remove()
+
+    // update notes
     listAll = document.querySelectorAll('#list > li')
     listAll.forEach(function(item, index) {
       listAll[index].setAttribute('onclick', 'deleteNote('+ index +')');
     })
 
-    // update list counter
-    totalnotes.textContent = '('+ daList.children.length +')'
+    // update localStorage
     updateStorage()
+
+    // update notes counter
+    totalnotes.textContent = '('+ notes.title.length +')'
     return false
   }
 }
 
 // close note
-function closeNote() {
+closeNote = () => {
   // close menu
   menu.classList.remove('opened')
   menu.setAttribute('href', 'https://michaelsboost.com/donate/')
@@ -155,56 +229,32 @@ function closeNote() {
   updateStorage()
 }
 
-// add note
-addnote.onclick = function() {
-  // inactivate delete note
-  if (deletenote.classList.contains('active')) {
-    deletenote.classList.remove('active')
-  }
+// toggle theme
+toggleTheme = () => {
+  // check if dark theme is enabled
+  if (theme.querySelector('.fa').classList.contains('fa-moon')) {
+    // change the icon to light theme
+    theme.querySelector('.fa').classList.remove('fa-moon')
+    theme.querySelector('.fa').classList.add('fa-sun')
 
-  notes.title.unshift('Title')
-  notes.body.unshift('Body')
-
-  // refresh elements on the screen
-  daList.innerHTML = ''
-  var liElm = document.createElement('div')
-  for (let numbers in notes.title) {
-    liElm.innerHTML = '<li onclick="editNote('+ numbers +')"><article class="note"><article>'+ notes.title[numbers] +'</article><section>'+ notes.body[numbers] +'</section></article></li>'
-    while (liElm.children.length > 0) {
-      daList.appendChild(liElm.children[0])
-    }
-  }
-
-  // update list number
-  totalnotes.textContent = '('+ daList.children.length +')'
-  
-  notesElm = document.querySelectorAll('.note')
-  listAll  = document.querySelectorAll('#list li')
-  updateStorage()
-}
-
-// delete note
-deletenote.onclick = function() {
-  if (this.classList.contains('active')) {
-    this.classList.remove('active')
-    listAll.forEach(function(item, index) {
-      listAll[index].setAttribute('onclick', 'editNote('+ index +')');
-    })
+    // apply light theme
+    notes.theme = 'light'
+    document.querySelector('[data-theme]').setAttribute('data-theme', notes.theme)
   } else {
-    this.classList.add('active')
-    listAll.forEach(function(item, index) {
-      listAll[index].setAttribute('onclick', 'deleteNote('+ index +')');
-    })
-  }
-}
+    // change the icon to dark theme
+    theme.querySelector('.fa').classList.add('fa-moon')
+    theme.querySelector('.fa').classList.remove('fa-sun')
 
-// clear scratchpad
-clearpad.onclick = function() {
-  scratchpad.value = ''
+    // apply dark theme
+    notes.theme = 'dark'
+    document.querySelector('[data-theme]').setAttribute('data-theme', notes.theme)
+  }
+
+  // update localStorage
   updateStorage()
 }
 
-// // initalize storage
+// initalize storage
 if (!localStorage.getItem('Notes')) {
   updateStorage()
 } else {
@@ -216,19 +266,12 @@ if (!localStorage.getItem('Notes')) {
   // first we'll append the list
   var str = ''
   for (let numbers in notes.title) {
-    str += '<li onclick="editNote('+ numbers +')"><article class="note"><article>'+ notes.title[numbers] +'</article><section>'+ notes.body[numbers] +'</section></article></li>'
+    str += '<li onclick="editNote('+ numbers +')"><strong>'+ notes.title[numbers] +'</strong><section>'+ notes.body[numbers] +'</section></li>'
   }
-  daList.innerHTML = str
-
-  // reset variables
-  notesElm  = document.querySelectorAll('#note .note')
-  noteTitle = document.querySelector('#note .note > article')
-  noteBody  = document.querySelector('#note .note > section')
-  daList    = document.getElementById('list')
-  listAll   = document.querySelectorAll('#list > li')
+  list.innerHTML = str
 
   // next display the stored value in scratchpad
-  scratchpad.value = notes.scratchpad
+  pad.value = notes.scratchpad
 
   // empty search criteria
   searchtitles.innerHTML = ''
@@ -239,4 +282,9 @@ if (!localStorage.getItem('Notes')) {
     str += '<option value="'+ notes.title[numbers] +'" />'
   }
   searchtitles.innerHTML = str
+
+  // apply theme
+  if (notes.theme === 'light') {
+    toggleTheme()
+  }
 }

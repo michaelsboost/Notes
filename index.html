@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <title>Notes - Your free and open source offline notepad application!</title>
     <meta charset="UTF-8">
@@ -12,7 +12,8 @@
     <meta property="og:description" content="Your free and open source offline notepad application!">
     <meta property="og:image"       content="https://michaelsboost.github.io/Notes/imgs/header.png">
     <link rel="shortcut icon" href="imgs/logo.svg" type="image/x-icon">
-    <link rel="stylesheet" href="css/dark.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/app.js" defer></script>
     <!-- Chrome, Firefox OS and Opera -->
     <meta name="theme-color" content="#000">
     <!-- Windows Phone -->
@@ -26,73 +27,67 @@
     <link rel="shortcut icon" href="imgs/logo.svg" type="image/x-icon">
   </head>
   <body>
-    <!-- search bar -->
-    <input id="search" type="text" placeholder="Search..." list="searchtitles" name="name" onkeyup="searchFunction()" onchange="searchFunction()">
-    <datalist id="searchtitles"></datalist>
+    <main>
+      <h1>
+        <span>
+          <a id="about" href="https://github.com/michaelsboost/Notes/" target="_blank">Notes</a> 
+          <span id="totalnotes">(0)</span>
+        </span>
 
-    <!-- close menu (and donate button) -->
-    <a id="menu" class="menuicon" href="https://michaelsboost.com/donate/">
-      <i class="fa fa-heart"></i>
-    </a>
-
-    <!-- notes header, add note and delete note buttons -->
-    <div class="grid">
-      <div class="grid__col--12"><br>
-        <h1>
-          <a id="about" class="h1" href="https://github.com/michaelsboost/Notes/" target="_blank">
-            Notes 
+        <span>
+          <a href="javascript:addNote()" role="button">
+            <i class="fa fa-plus"></i>
           </a>
-          <span id="totalnotes" class="totalnotes">(0)</span>
-          <span class="notebtns fr">
-            <!-- <button id="addnote" class="icon active"> -->
-            <button class="icon" id="addnote">
-              <i class="fa fa-plus"></i>
-            </button>
-            &nbsp;
-            <!-- <button id="deletenote" class="icon active"> -->
-            <button class="icon" id="deletenote">
-              <i class="fa fa-trash"></i>
-            </button>
-          </span>
-        </h1>
-      </div>
-    </div>
-    
-    <!-- your notes -->
-    <div class="grid">
-      <div class="grid__col--12">
-        <ul class="list" id="list">
-          <!-- <li>
-            <div class="note">
-              <strong>Your note title</strong>
-              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, quam tempore blanditiis aut laborum culpa fugit voluptatibus veniam error at praesentium, porro nulla animi veritatis! Delectus corrupti perferendis iure voluptas?</div>
-            </div>
-          </li> -->
-        </ul>
+          <a id="deletenote" href="javascript:deleteNote()" role="button">
+            <i class="fa fa-trash"></i>
+          </a>
+          <a href="javascript:openPad()" role="button">
+            <i class="fa fa-file-text"></i>
+          </a>
+          <a id="theme" href="javascript:toggleTheme()" role="button">
+            <i class="fa fa-moon"></i>
+          </a>
+          <a class="text-red-500" href="https://michaelsboost.com/donate" target="_blank" role="button">
+            <i class="fa fa-heart"></i>
+          </a>
+        </span>
+      </h1>
+      <ul id="list">
+        <!-- <li>
+          <strong>Your note title</strong>
+          <section>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem repellendus nam, earum quasi hic odit aperiam officiis assumenda sunt ab ut, quaerat inventore eius, accusamus consectetur perferendis quis. Fugiat, ipsa.
+          </section>
+        </li> -->
+      </ul>
+    </main>
 
-        <!-- scratchpad header -->
-        <br>
-        <h1>Scratchpad 
-          <span class="fr">
-            <button class="icon" id="clearpad">
-              <i class="fa fa-trash"></i>
-            </button>
-          </span>
-        </h1>
+      <!-- search bar -->
+      <footer class="py-0">
+        <input id="search" type="search" placeholder="Search..." list="searchtitles" onkeyup="searchFunction()" onchange="searchFunction()">
+        <datalist id="searchtitles"></datalist>
+      </footer>
 
-        <!-- scratchpad -->
-        <textarea id="scratchpad" class="scratchpad" placeholder="Write something..."></textarea>
-      </div>
-    </div>
+      <dialog id="scratchpad" class="pb-0" open="false">
+        <article>
+          <a class="py-0" href="javascript:clearPad()" role="button">
+            <i class="fa fa-trash"></i>
+          </a>
+          <a class="float-right py-0" href="javascript:closePad()" role="button">
+            <i class="fa fa-times"></i>
+          </a>
+          <textarea id="pad" placeholder="Type something..."></textarea>
+        </article>
+      </dialog>
 
-    <div id="dialog" class="dialog hide">
-      <article class="note">
-        <input id="editorTitle" type="text" placeholder="Title">
-        <section id="editorBody"></section>
-      </article>
-    </div>
-
-    <script src="libraries/quill/quill.min.js"></script>
-    <script src="js/notes.js"></script>
+      <dialog id="dialog" open="false">
+        <article>
+          <a class="float-right py-0" href="javascript:closeDialog()" role="button">
+            <i class="fa fa-times"></i>
+          </a>
+          <input id="editorTitle" type="text" placeholder="Title">
+          <section id="editorBody"></section>
+        </article>
+      </dialog>
   </body>
 </html>

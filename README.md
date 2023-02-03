@@ -8,7 +8,7 @@ Your free and open source offline notepad application! Try it today at [michaels
 Version
 -------------
 
-1.001-release
+1.002-release
 
 License
 -------------
@@ -20,7 +20,7 @@ Tech
 
 Notes uses a number of open source projects to work properly:
 
-* [Poly UI Kit](https://github.com/Guilh/Poly) - Used for the application's user interface
+* [PicoCSS](https://picocss.com/) - Used for the application's user interface
 * [Quill](https://quilljs.com/) - A powerful rich text (WYSIWYG) editor
 
 Development
@@ -30,7 +30,7 @@ Want to contribute? Great!
 
 You can submit a pull request or simply share the project :)  
 
-*As of January 16th, 2023 Notes is no longer an active project. All updates as of that date and on are solely contributor based implementations.*
+*As of February 2nd, 2023 Notes is no longer an active project. All updates as of that date and on are solely contributor based implementations.*
 
 Of course Notes is free and open source, so you can always fork the project and have fun :)  
 

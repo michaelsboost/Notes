@@ -1,105 +1,181 @@
+/* imports */
+@import url(../libraries/pico/pico.classless.css);
+@import url(../libraries/font-awesome/css/all.min.css);
+@import url(../libraries/quill/quill.core.css);
+@import url(../libraries/quill/quill.snow.css);
+
+/* font */
+@font-face {
+  font-family: Lato;
+  src: url("../fonts/Lato-Light.ttf");
+}
+
+/* theme */
+[data-theme=light] [role=button] {
+  --color: hsl(206, 30%, 15%);
+}
+
 /* resets */
 body {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
+  font-size: 16px;
+  line-height: 1.5; 
 }
-body > input[type=search] {
-  width: calc(100% - 30px);
+body, main > h1 {
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: lighter;
+}
+body > main {
+  padding: 0;
+}
+h1 {
+  position: relative;
+  top: 2rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid hsl(205, 22%, 28%);
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: space-between;
+}
+h1 > a {
+  text-decoration: none;
+}
+h1 a[role=button], dialog a[role=button] {
+  background: transparent;
   border: 0;
 }
-body > input {
-  font-weight: 300;
-  font-size: 2.625em;
-  line-height: 1.09524;
-  margin: 0;
-}
-
-/* removes datalist dropdown arrow */
-input::-webkit-calendar-picker-indicator {
-  display: none;
-}
-
-/* menu */
-.menuicon {
-  position: absolute;
-  top: 0;
-  right: 10px;
-  margin: .25em;
-  font-size: 2.625em;
-  z-index: 2;
-}
-.icon {
-  transform: scale(0.75);
-}
-
-/* notes */
-.list {
+ul {
+  padding: 0;
+  height: calc(100vh - 13rem);
   overflow: auto;
-  height: calc(100vh - 70vh);
 }
-.list > li:nth-child(1) {
-  padding-top: 15px;
-}
-.list > li {
+ul li {
   cursor: pointer;
-  padding-bottom: 25px;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  list-style: none;
+  border-bottom: 1px solid hsl(205, 22%, 28%);
+  height: 5.3em;
+  overflow: hidden;
 }
-.list > li:not(:first-child) {
-  padding-top: 15px;
+ul li > strong {
+  font-size: 1.25rem;
 }
-.note > article {
-  display: block;
-  font-size: 1.25em;
-  font-weight: bold;
-}
-.dialog {
-  cursor: default;
+dialog > article {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 1em;
-  z-index: 1;
-  height: auto;
-  overflow: auto;
-}
-.list .note {
-  height: 54px;
-  overflow: hidden;
-}
-.dialog .note > input {
-  cursor: text;
-  font-weight: 300;
-  font-size: 2.625em;
-  line-height: 0;
-  padding: 0;
-  margin: 0 0 .5em 0;
-  white-space: nowrap;
-  overflow: auto;
-  background: transparent;
-}
-.dialog .note > section {
-  cursor: text;
-  height: calc(100vh - 146px);
-}
-
-/* scratchpad */
-.scratchpad {
+  max-width: initial;
+  max-height: initial;
   margin: 0;
-  min-height: calc(100vh - 75vh);
-  resize: vertical;
-  border-radius: 5px;
+}
+dialog > article > a[role=button] {
+  font-size: 2rem;
+  position: relative;
+  top: -1rem;
+}
+dialog > article > a.float-right {
+  right: -1rem;
+}
+dialog > input {
+  margin-top: -1rem;
+}
+dialog > section {
+  height: calc(100% - 12.7em);
+}
+dialog textarea {
+  resize: none;
+  height: calc(100% - 2rem);
+  margin: 0;
+  overflow: auto;
 }
 
-/* misc */
-.fr {
+/* editor */
+.ql-container {
+  font-family: inherit;
+}
+.ql-toolbar.ql-snow, .ql-container.ql-snow {
+  border: 1px solid var(--form-element-border-color);
+  padding-bottom: 0;
+}
+.ql-container.ql-snow {
+  background-color: var(--form-element-background-color);
+  color: var(--form-element-color);
+}
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options,
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+  border-color: var(--form-element-border-color);
+}
+.ql-snow .ql-picker-options {
+  background-color: var(--form-element-background-color);
+}
+.ql-toolbar.ql-snow, .ql-snow .ql-picker,
+.ql-toolbar.ql-snow .ql-picker-label,
+.ql-picker-options .ql-picker-item,
+.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+  color: var(--form-element-color);
+}
+.ql-snow .ql-stroke {
+  stroke: var(--form-element-color);
+}
+.ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill {
+  fill: var(--form-element-color);
+}
+.ql-snow .ql-color-picker .ql-picker-label, .ql-snow .ql-icon-picker .ql-picker-label {
+  padding: 0;
+}
+.ql-toolbar button, .ql-toolbar [role=button] {
+  border: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.ql-picker-options .ql-picker-item {
+  background-color: inherit;
+  text-align: left;
+}
+.ql-snow .ql-formats {
+  vertical-align: top;
+}
+.ql-formats {
+  padding: 0;
+}
+.ql-snow .ql-picker.ql-size {
+  width: auto;
+  height: auto;
+}
+.ql-snow .ql-picker-label {
+  height: auto;
+}
+.ql-size.ql-picker .ql-picker-label {
+  padding-right: 1rem;
+}
+.ql-picker-label {
+  background-color: inherit;
+  padding-right: 1rem;
+  text-align: left;
+}
+.ql-container.ql-snow {
+  cursor: text;
+  height: calc(100% - 18.8em);
+}
+
+/* utilities */
+.hidden {
+  display: none;
+}
+.float-right {
   float: right;
 }
-.hide {
-  display: none;
+.py-0 {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.pb-0 {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.text-red-500 {
+  color: hsl(0, 84%, 60%);
 }
