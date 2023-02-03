@@ -62,32 +62,32 @@
       </ul>
     </main>
 
-      <!-- search bar -->
-      <footer class="py-0">
-        <input id="search" type="search" placeholder="Search..." list="searchtitles" onkeyup="searchFunction()" onchange="searchFunction()">
-        <datalist id="searchtitles"></datalist>
-      </footer>
+    <!-- search bar -->
+    <footer class="py-0">
+      <input id="search" type="search" placeholder="Search..." list="searchtitles" onkeyup="searchFunction()" onchange="searchFunction()">
+      <datalist id="searchtitles"></datalist>
+    </footer>
 
-      <dialog id="scratchpad" class="pb-0" open="false">
-        <article>
-          <a class="py-0" href="javascript:clearPad()" role="button">
-            <i class="fa fa-trash"></i>
-          </a>
-          <a class="float-right py-0" href="javascript:closePad()" role="button">
-            <i class="fa fa-times"></i>
-          </a>
-          <textarea id="pad" placeholder="Type something..."></textarea>
-        </article>
-      </dialog>
+    <dialog id="scratchpad" class="pb-0" open="false">
+      <article>
+        <a class="py-0" href="javascript:clearPad()" role="button">
+          <i class="fa fa-trash"></i>
+        </a>
+        <a class="float-right py-0" href="javascript:closePad()" role="button">
+          <i class="fa fa-times"></i>
+        </a>
+        <textarea id="pad" placeholder="Type something..."></textarea>
+      </article>
+    </dialog>
 
-      <dialog id="dialog" open="false">
-        <article>
-          <a class="float-right py-0" href="javascript:closeDialog()" role="button">
-            <i class="fa fa-times"></i>
-          </a>
-          <input id="editorTitle" type="text" placeholder="Title">
-          <section id="editorBody"></section>
-        </article>
-      </dialog>
+    <dialog id="dialog" open="false">
+      <article>
+        <a class="float-right py-0" href="javascript:closeDialog()" role="button">
+          <i class="fa fa-times"></i>
+        </a>
+        <input id="editorTitle" type="text" placeholder="Title">
+        <section id="editorBody"></section>
+      </article>
+    </dialog>
   </body>
 </html>
