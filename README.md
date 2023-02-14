@@ -8,7 +8,7 @@ Your free and open source offline notepad application! Try it today at [michaels
 Version
 -------------
 
-1.002-release
+1.0.1
 
 License
 -------------

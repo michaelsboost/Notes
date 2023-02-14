@@ -1,0 +1,26 @@
+{
+  "name": "notes",
+  "version": "1.0.1",
+  "description": "Your free and open source offline notepad application!",
+  "main": "index.js",
+  "scripts": {
+    "serve": "http-server -p 1337 build -c-1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelsboost/Notes.git"
+  },
+  "keywords": [
+    "html",
+    "js",
+    "javascript",
+    "notes",
+    "notepad"
+  ],
+  "author": "michael schwartz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/michaelsboost/Notes/issues"
+  },
+  "homepage": "https://github.com/michaelsboost/Notes#readme"
+}
