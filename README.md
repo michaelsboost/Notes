@@ -30,7 +30,7 @@ Want to contribute? Great!
 
 You can submit a pull request or simply share the project :)  
 
-*As of February 3rd, 2023 Notes is no longer an active project. All updates as of that date and on are solely contributor based implementations.*
+*As of February 14th, 2023 Notes is no longer an active project. All updates as of that date and on are solely contributor based implementations.*
 
 Of course Notes is free and open source, so you can always fork the project and have fun :)  
 
